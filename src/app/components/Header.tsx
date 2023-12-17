@@ -1,10 +1,16 @@
+import Image from "next/image";
 import Link from "next/link";
+import headerLogo from "../assets/header.png"
 
 export default function Header() {
   return (
-    <header className='pb-10'>
+    <header className=''>
         <Link href={'/'}>
-            Hotseat
+            <Image
+                src={headerLogo}
+                alt='Hotseat logo'
+                height={35}
+            />
         </Link>
     </header>
   )

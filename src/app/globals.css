@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+main{
+  margin: auto;
+  max-width: 500px;
+  padding: 10px;
+}
+
+header{
+  border-bottom: 1px solid rgba(239, 239, 239, 1);
+  padding: 20px 0px;
+  font-weight: 700;
+}
