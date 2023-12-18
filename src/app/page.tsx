@@ -3,7 +3,7 @@ import emojiImage from "./assets/emoji.png"
 import eighteenImage from "./assets/eighteenplus.png"
 import Image from "next/image";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <main className="text-center">
       <Header/>
