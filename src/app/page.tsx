@@ -24,12 +24,12 @@ export default function Home() {
 
       {/* Action buttons  */}
       <center>
-        <section className="max-w-max">
+        <section className="max-w-max mt-20">
           <button className='btn flex py-4 place-content-center mt-7 bg-blue-500 text-white w-full px-14 rounded-full font-bold drop-shadow'>
-            Start new game
-          </button>
-          <button className='btn flex py-4 place-content-center mt-7 bg-indigo-400 text-white w-full px-14 rounded-full font-bold drop-shadow'>
             Join game
+          </button>
+          <button className='btn flex py-4 place-content-center mt-7 bg-indigo-500 text-white w-full px-14 rounded-full font-bold drop-shadow'>
+            Start a new
           </button>
         </section>
       </center>
