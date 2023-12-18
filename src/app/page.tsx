@@ -2,6 +2,7 @@ import Header from "./components/Header";
 import emojiImage from "./assets/emoji.png"
 import eighteenImage from "./assets/eighteenplus.png"
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -25,12 +26,19 @@ export default function HomePage() {
       {/* Action buttons  */}
       <center>
         <section className="max-w-max mt-20">
-          <button className='btn flex py-4 place-content-center mt-7 bg-blue-500 text-white w-full px-14 rounded-full font-bold drop-shadow'>
-            Join game
-          </button>
-          <button className='btn flex py-4 place-content-center mt-7 bg-indigo-500 text-white w-full px-14 rounded-full font-bold drop-shadow'>
-            Start a new
-          </button>
+
+          <Link href={'/join'}>
+            <button className='btn flex py-4 place-content-center mt-7 bg-blue-500 text-white w-full px-14 rounded-full font-bold drop-shadow'>
+              Join game
+            </button>
+          </Link>
+
+          <Link href={'/create'}>
+            <button className='btn flex py-4 place-content-center mt-7 bg-indigo-500 text-white w-full px-14 rounded-full font-bold drop-shadow'>
+              Start a new
+            </button>
+          </Link>
+
         </section>
       </center>
     </main>
