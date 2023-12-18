@@ -10,6 +10,7 @@ export default function Header() {
                 src={headerLogo}
                 alt='Hotseat logo'
                 height={35}
+                priority={true}
             />
         </Link>
     </header>
