@@ -35,7 +35,7 @@ export default function HomePage() {
 
           <Link href={'/game/123434'}>
             <button className='btn flex py-4 place-content-center mt-7 bg-indigo-500 text-white w-full px-14 rounded-full font-bold drop-shadow'>
-              Start a new
+              Start new game
             </button>
           </Link>
 
