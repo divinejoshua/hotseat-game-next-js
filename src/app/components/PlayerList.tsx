@@ -9,6 +9,7 @@ export default function PlayerList() {
             <div className="row-span-2 col-span-1 border rounded-lg shadow-sm px-3 py-3">
                 <div className="player-card flex">
                     <p className="truncate">{"Player 1"}</p>
+                    <span className="ml-4 bg-pink-100 text-xs text-pink-500 drop-shadow-xs rounded-lg px-3 py-1">Host</span>
                 </div>
             </div>
 
