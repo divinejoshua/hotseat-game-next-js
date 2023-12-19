@@ -2,7 +2,6 @@
 import { useState } from "react"
 
 export default function JoinGameForm() {
-  const [count, setcount] = useState<number>(0)
   return (
     <div>
      <input
