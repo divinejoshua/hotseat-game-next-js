@@ -1,5 +1,5 @@
 import Header from "@/app/components/Header";
-import JoinGameForm from "@/app/components/JoinGameForm";
+import JoinGameForm from "@/app/(pages)/join/JoinGameForm";
 
 export default function JoinGamePage() {
   return (
