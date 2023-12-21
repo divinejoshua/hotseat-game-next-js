@@ -1,25 +1,23 @@
 "use client"
 
 import Header from "@/app/components/Header"
-import QuestionSection from "./QuestionList"
+import QuestionSection from "./QuestionSection"
 import SendQuestion from "./SendQuestion"
 import { useState } from "react"
 
 export default function GamePage({ params } : any) {
 
-  const [gameState, setgameState] = useState<number>(1)
-
-  // The send messge function
-  const switchGameState = (state : number) =>{
-    setgameState(state)
-  }
+  const [showQuestionForm, setshowQuestionForm] = useState<boolean>(true)
 
   return (
     <main className="">
       <Header/>
-      {gameState}
-      <QuestionSection switchGameState={switchGameState}/>
-      <SendQuestion switchGameState={switchGameState}/>
+      {
+        showQuestionForm ?
+          <SendQuestion setshowQuestionForm={setshowQuestionForm}/>
+        :
+          <QuestionSection setshowQuestionForm={setshowQuestionForm} gameId={params.gameId}/>
+      }
     </main>
   )
 }

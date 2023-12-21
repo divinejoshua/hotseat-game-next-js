@@ -9,17 +9,18 @@ export default function SendQuestion(props : any) {
   const [messageBody, setmessageBody] = useState<string>("")
   const [messageSentSuccess, setmessageSentSuccess] = useState<boolean>(false)
   const [isError, setisError] = useState<boolean>(false)
-  const [countDownSeconds, setcountDownSeconds] = useState<number>(6)
+  const [countDownSeconds, setcountDownSeconds] = useState<number>(10)
 
    // The send messge function
    const SendMessage = () =>{
     console.log("Sending message")
+    setmessageSentSuccess(true)
    }
 
    // Count down Timer effect
    useEffect(() => {
     if (countDownSeconds===0){
-        props.switchGameState(2)
+        props.setshowQuestionForm(false)
     }
     const timer : any = countDownSeconds > 0 && setInterval(() => setcountDownSeconds(countDownSeconds - 1), 1000);
     return () =>{ clearInterval(timer) };
@@ -31,29 +32,42 @@ export default function SendQuestion(props : any) {
         <h3 className="float-left text-lg mt-1">Write your question here</h3>
         <span className="float-right text-lg drop-shadow-xs font-bold">{countDownSeconds}</span>
       </div>
-      <div className='message-body mt-5 text-gray-700'>
-        <textarea
-          onChange={e => setmessageBody(e.target.value)}
-          onClick={() => setisError(false)}
-          className='w-full border rounded p-3
-            border-gray-300
-            focus:outline-none
-            focus:border-blue-500
-            focus:ring-blue-500 focus:ring-1 focus:border-100 transition duration-0 hover:duration-150'
-          maxLength={maxLength} rows={3} autoFocus
-          placeholder="Ask a question...">
-        </textarea>
-        <p className='text-xs text-gray-500 mt-4 float-right'>{messageBody.length} / {maxLength}</p>
-      </div>
+      {/* Question text area  */}
+      { !messageSentSuccess ?
+          // Text box before the message is sent
+          <div>
+            <div className='message-body mt-5 text-gray-700'>
+              <textarea
+                onChange={e => setmessageBody(e.target.value)}
+                onClick={() => setisError(false)}
+                className='w-full border rounded p-3
+                  border-gray-300
+                  focus:outline-none
+                  focus:border-blue-500
+                  focus:ring-blue-500 focus:ring-1 focus:border-100 transition duration-0 hover:duration-150'
+                maxLength={maxLength} rows={3} autoFocus
+                placeholder="Ask a question...">
+              </textarea>
+              <p className='text-xs text-gray-500 mt-4 float-right'>{messageBody.length} / {maxLength}</p>
+            </div>
 
-      <center>
-        <button
-        className='btn flex place-content-center mt-10 bg-blue-500 text-white px-20 py-3 rounded-full font-bold drop-shadow'
-        onClick={()=> SendMessage() }
-        >
-          Send message
-        </button>
-      </center>
+            <center>
+              <button
+              className='btn flex place-content-center mt-10 bg-blue-500 text-white px-20 py-3 rounded-full font-bold drop-shadow'
+              onClick={()=> SendMessage() }
+              >
+                Send message
+              </button>
+            </center>
+          </div>
+
+        :
+        // Success message
+        <div className="text-center mt-20">
+          <p className="text-2xl">Message sent successfully</p>
+        </div>
+      }
+
     </div>
   )
 
