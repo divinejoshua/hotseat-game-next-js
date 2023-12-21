@@ -1,6 +1,9 @@
 "use client"
-export default function QuestionSection() {
+
+import { useState } from "react";
+
+export default function QuestionSection(props : any) {
   return (
-    <div>QuestionSection</div>
+    <div>Question List</div>
   )
 }
