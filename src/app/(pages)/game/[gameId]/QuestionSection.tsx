@@ -15,9 +15,12 @@ export default function QuestionSection(props : any) {
     "What is the powerhouse of the cell?"
   ])
 
+  // The send messge function
+  const changeQuestion = (value: number) =>{
+    setactiveQuestion(value)
+  }
   // Count down Timer effect
   useEffect(() => {
-    console.log(props.gameId)
     let timer : any
     if (countDownSeconds>0){
       timer = countDownSeconds > 0 && setInterval(() => setcountDownSeconds(countDownSeconds - 1), 1000);
@@ -43,17 +46,23 @@ export default function QuestionSection(props : any) {
       <div>
         <div className='mt-16 message-card rounded shadow-sm border mt-5 py-10 px-7'>
             <div className='message-body text-center text-xl text-gray-700'>
-                <p>At what age did you get your first car?</p>
+                <p>{questionList[activeQuestion-1]}</p>
             </div>
         </div>
 
       {/* Pagination  */}
         <div className="mt-10 flex justify-between">
-          <button className='btn py-2 place-content-center bg-purple-500 text-white px-4 rounded-lg font-bold drop-shadow'>
+          <button className='btn py-2 place-content-center bg-purple-500 text-white px-4 rounded-lg font-bold drop-shadow'
+            onClick={() => changeQuestion(activeQuestion-1)}
+            disabled={activeQuestion === 1}
+            >
             Prev
           </button>
-          <p className="text-center text-lg mt-2"> 1/6</p>
-          <button className='btn py-2 place-content-center bg-blue-500 text-white px-4 rounded-lg font-bold drop-shadow'>
+          <p className="text-center text-lg mt-2"> {activeQuestion}/{questionList.length}</p>
+          <button className='btn py-2 place-content-center bg-blue-500 text-white px-4 rounded-lg font-bold drop-shadow'
+            onClick={() => changeQuestion(activeQuestion+1)}
+            disabled={activeQuestion == questionList.length}
+          >
             Next
           </button>
         </div>
