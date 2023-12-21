@@ -12,12 +12,18 @@ export default function QuestionSection(props : any) {
     "Who painted the Mona Lisa?",
     "What year was JavaScript created?",
     "How many continents are there?",
-    "What is the powerhouse of the cell?"
+    "What is the cell?"
   ])
 
-  // The send messge function
+  // The change question function
   const changeQuestion = (value: number) =>{
     setactiveQuestion(value)
+    setcountDownSeconds(3)
+  }
+
+  // Finish Question then takes user back to the Write question page
+  const finishQuestion = () =>{
+    props.setshowQuestionForm(true)
   }
   // Count down Timer effect
   useEffect(() => {
@@ -27,6 +33,14 @@ export default function QuestionSection(props : any) {
     }
     return () =>{ clearInterval(timer) };
   }, [countDownSeconds, props]);
+
+  useEffect(() => {
+    if(questionList.length===0){
+      setactiveQuestion(0)
+    }
+    return () => {
+    }
+  }, [])
 
   return (
     <div className="pt-3 px-2">
@@ -43,36 +57,58 @@ export default function QuestionSection(props : any) {
       }
 
       {/* Question box */}
-      <div>
-        <div className='mt-16 message-card rounded shadow-sm border mt-5 py-10 px-7'>
-            <div className='message-body text-center text-xl text-gray-700'>
-                <p>{questionList[activeQuestion-1]}</p>
+      { countDownSeconds === 0 && questionList.length > 1 &&
+        <div>
+            <div className='mt-16 message-card rounded shadow-sm border mt-5 py-10 px-7'>
+                <div className='message-body text-center text-xl text-gray-700'>
+                    <p>{questionList[activeQuestion-1]}</p>
+                </div>
             </div>
-        </div>
 
-      {/* Pagination  */}
-        <div className="mt-10 flex justify-between">
-          <button className='btn py-2 place-content-center bg-purple-500 text-white px-4 rounded-lg font-bold drop-shadow'
-            onClick={() => changeQuestion(activeQuestion-1)}
-            disabled={activeQuestion === 1}
+            {/* Pagination  */}
+            <div className="mt-10 flex justify-between">
+              <button className='btn py-2 place-content-center bg-purple-500 text-white px-4 rounded-lg font-bold drop-shadow'
+                onClick={() => changeQuestion(activeQuestion-1)}
+                disabled={activeQuestion === 1}
+                >
+                Prev
+              </button>
+              <p className="text-center text-lg mt-2"> {activeQuestion}/{questionList.length}</p>
+              <button className='btn py-2 place-content-center bg-blue-500 text-white px-4 rounded-lg font-bold drop-shadow'
+                onClick={() => changeQuestion(activeQuestion+1)}
+                disabled={activeQuestion == questionList.length}
+              >
+                Next
+              </button>
+            </div>
+
+            {/* Finish and send the user back to the question form  */}
+            { activeQuestion === questionList.length &&
+              <center>
+                <button className='btn flex py-3 place-content-center mt-10 bg-blue-500 text-white px-12 rounded-full font-bold drop-shadow'
+                 onClick={() => finishQuestion()}
+                >
+                  Play again
+                </button>
+              </center>
+            }
+
+        </div>
+      }
+
+      {
+        countDownSeconds === 0 && questionList.length ===0 &&
+        <div>
+          <center>
+            <p className="mt-20 text-2xl">No Questions asked !</p>
+            <button className='btn flex py-3 place-content-center mt-10 bg-blue-500 text-white px-12 rounded-full font-bold drop-shadow'
+              onClick={() => finishQuestion()}
             >
-            Prev
-          </button>
-          <p className="text-center text-lg mt-2"> {activeQuestion}/{questionList.length}</p>
-          <button className='btn py-2 place-content-center bg-blue-500 text-white px-4 rounded-lg font-bold drop-shadow'
-            onClick={() => changeQuestion(activeQuestion+1)}
-            disabled={activeQuestion == questionList.length}
-          >
-            Next
-          </button>
+              Play again
+            </button>
+          </center>
         </div>
-
-        <center>
-          <button className='btn flex py-3 place-content-center mt-10 bg-blue-500 text-white px-12 rounded-full font-bold drop-shadow'>
-            Finish
-          </button>
-        </center>
-      </div>
+      }
 
 
     </div>

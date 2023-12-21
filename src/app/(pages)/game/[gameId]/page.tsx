@@ -7,19 +7,17 @@ import { useState } from "react"
 
 export default function GamePage({ params } : any) {
 
-  const [gameState, setgameState] = useState<number>(1)
-
-  // The send messge function
-  const switchGameState = (state : number) =>{
-    setgameState(state)
-  }
+  const [showQuestionForm, setshowQuestionForm] = useState<boolean>(true)
 
   return (
     <main className="">
       <Header/>
-      {/* {gameState} */}
-      {/* <SendQuestion switchGameState={switchGameState}/> */}
-      <QuestionSection switchGameState={switchGameState} gameId={params.gameId}/>
+      {
+        showQuestionForm ?
+          <SendQuestion setshowQuestionForm={setshowQuestionForm}/>
+        :
+          <QuestionSection setshowQuestionForm={setshowQuestionForm} gameId={params.gameId}/>
+      }
     </main>
   )
 }

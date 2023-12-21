@@ -14,13 +14,13 @@ export default function SendQuestion(props : any) {
    // The send messge function
    const SendMessage = () =>{
     console.log("Sending message")
-    props.switchGameState(2)
+    props.setshowQuestionForm(false)
    }
 
    // Count down Timer effect
    useEffect(() => {
     if (countDownSeconds===0){
-        props.switchGameState(2)
+        props.setshowQuestionForm(false)
     }
     const timer : any = countDownSeconds > 0 && setInterval(() => setcountDownSeconds(countDownSeconds - 1), 1000);
     return () =>{ clearInterval(timer) };
@@ -32,6 +32,7 @@ export default function SendQuestion(props : any) {
         <h3 className="float-left text-lg mt-1">Write your question here</h3>
         <span className="float-right text-lg drop-shadow-xs font-bold">{countDownSeconds}</span>
       </div>
+      {/* Question text area  */}
       <div className='message-body mt-5 text-gray-700'>
         <textarea
           onChange={e => setmessageBody(e.target.value)}
