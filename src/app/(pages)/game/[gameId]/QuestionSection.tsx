@@ -34,6 +34,7 @@ export default function QuestionSection(props : any) {
     return () =>{ clearInterval(timer) };
   }, [countDownSeconds, props]);
 
+  // Use effect
   useEffect(() => {
     if(questionList.length===0){
       setactiveQuestion(0)
@@ -96,6 +97,7 @@ export default function QuestionSection(props : any) {
         </div>
       }
 
+      {/* If there were no questions asked */}
       {
         countDownSeconds === 0 && questionList.length ===0 &&
         <div>
