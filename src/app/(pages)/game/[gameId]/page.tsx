@@ -1,7 +1,7 @@
 "use client"
 
 import Header from "@/app/components/Header"
-import QuestionSection from "./QuestionList"
+import QuestionSection from "./QuestionSection"
 import SendQuestion from "./SendQuestion"
 import { useState } from "react"
 
@@ -17,9 +17,9 @@ export default function GamePage({ params } : any) {
   return (
     <main className="">
       <Header/>
-      {gameState}
-      <QuestionSection switchGameState={switchGameState}/>
-      <SendQuestion switchGameState={switchGameState}/>
+      {/* {gameState} */}
+      {/* <SendQuestion switchGameState={switchGameState}/> */}
+      <QuestionSection switchGameState={switchGameState} gameId={params.gameId}/>
     </main>
   )
 }
