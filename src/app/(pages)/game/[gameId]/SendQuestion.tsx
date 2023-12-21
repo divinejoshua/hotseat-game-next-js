@@ -9,11 +9,12 @@ export default function SendQuestion(props : any) {
   const [messageBody, setmessageBody] = useState<string>("")
   const [messageSentSuccess, setmessageSentSuccess] = useState<boolean>(false)
   const [isError, setisError] = useState<boolean>(false)
-  const [countDownSeconds, setcountDownSeconds] = useState<number>(6)
+  const [countDownSeconds, setcountDownSeconds] = useState<number>(10)
 
    // The send messge function
    const SendMessage = () =>{
     console.log("Sending message")
+    props.switchGameState(2)
    }
 
    // Count down Timer effect
