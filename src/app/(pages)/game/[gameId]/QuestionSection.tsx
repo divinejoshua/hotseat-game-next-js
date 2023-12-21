@@ -6,6 +6,7 @@ export default function QuestionSection(props : any) {
   const [activeQuestion, setactiveQuestion] = useState<number>(1)
   const [countDownSeconds, setcountDownSeconds] = useState<number>(3)
   const [questionList, setquestionList] = useState([])
+  
   // The send messge function
 
   // Count down Timer effect
