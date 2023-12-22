@@ -1,8 +1,8 @@
 "use client"
 
 import Header from "@/app/components/Header"
-import QuestionSection from "./QuestionSection"
-import SendQuestion from "./SendQuestion"
+import QuestionSection from "../../QuestionSection"
+import SendQuestion from "../../SendQuestion"
 import { useState } from "react"
 
 export default function GamePage({ params } : any) {
