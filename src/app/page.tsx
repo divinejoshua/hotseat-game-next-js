@@ -3,6 +3,7 @@ import emojiImage from "./assets/emoji.png"
 import eighteenImage from "./assets/eighteenplus.png"
 import Image from "next/image";
 import Link from "next/link";
+import CreateNewGame from "./components/CreateNewGame";
 
 export default function HomePage() {
   return (
@@ -33,11 +34,8 @@ export default function HomePage() {
             </button>
           </Link>
 
-          <Link href={'/room/123434'}>
-            <button className='btn flex py-4 place-content-center mt-7 bg-indigo-500 text-white w-full px-14 rounded-full font-bold drop-shadow'>
-              Start new game
-            </button>
-          </Link>
+          {/* Start new game button  */}
+          <CreateNewGame/>
 
         </section>
       </center>

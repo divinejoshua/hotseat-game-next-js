@@ -41,13 +41,14 @@ export default function QuestionSection(props : any) {
     }
     return () => {
     }
-  }, [])
+  }, [questionList])
 
   return (
     <div className="pt-3 px-2">
-      <p className="text-lg float-left">Questions</p>
-      <p className="text-lg float-right">Game code &nbsp;  - &nbsp; <b>{props.gameId}</b></p>
-
+      <div className="clear-both">
+        <p className="text-lg float-left">Questions</p>
+        <p className="text-lg float-right">Game code &nbsp;  - &nbsp; <b>{props.gameId}</b></p>
+      </div>
       {/* Loader  */}
       {
         countDownSeconds > 0 &&
@@ -59,8 +60,8 @@ export default function QuestionSection(props : any) {
 
       {/* Question box */}
       { countDownSeconds === 0 && questionList.length > 1 &&
-        <div>
-            <div className='mt-16 message-card rounded shadow-sm border mt-5 py-10 px-7'>
+        <div className="mt-10">
+            <div className='message-card rounded shadow-sm border mt-5 py-10 px-7'>
                 <div className='message-body text-center text-xl text-gray-700'>
                     <p>{questionList[activeQuestion-1]}</p>
                 </div>
