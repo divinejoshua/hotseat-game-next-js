@@ -34,7 +34,6 @@ export default function GamePage({ params } : any) {
     if(playerListOrder[0].player_id === localStorage.getItem('playerDetails') as string){
       return  true
     }
-
     return false
   }
 
