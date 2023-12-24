@@ -10,6 +10,7 @@ import {
     query,
     where,
   } from 'firebase/firestore';
+  import {v4 as uuidv4} from 'uuid';
 
 export default function JoinGameForm() {
 
@@ -18,32 +19,46 @@ export default function JoinGameForm() {
 
   // DATA
   const gamesColletionRef = collection(firebase, 'games');
+  const playersColletionRef = collection(firebase, 'players');
   const [isValidGameCode, setisValidGameCode] = useState<boolean>(false)
   const [formErrorMessage, setformErrorMessage] = useState<string>("")
   const [gameIdFromLocalstorage, setgameIdFromLocalstorage] = useState<any>()
   const [gameIdInput, setgameIdInput] = useState<string>("")
+  const [gamePlayerName, setgamePlayerName] = useState<string>("")
 
-  const joinGame = () =>{
-    if(isValidGameCode || gameIdFromLocalstorage){
+  // Handle and validate form
+  const handleSubmit = (event : any) =>{
+    event.preventDefault();
+
+    // Validate game id
+    if(!isValidGameCode){
+      checkGameId(gameIdInput)
+    }
+
+    // Check if game is valid and player has a valid name
+    if(isValidGameCode && gamePlayerName.replace(/\s/g, '').length){
       localStorage.removeItem('gameId');
-      router.push(`/room/${gameIdInput}`);
+        addPlayerToGame()
     }
   }
 
-  // // Add player to game
-  // async function addPlayerToGame() {
-  //   const createPlayer = {
-  //     game_id : gameIdInput,
-  //     player_id : generateGameId().toString(),
-  //   };
+  // Add player to game
+  async function addPlayerToGame() {
+    const createPlayer = {
+      game_id : gameIdInput,
+      player_id : uuidv4(),
+      player_name : gamePlayerName
+    };
 
-  //   try {
-  //     const playerRef = doc(colletionRef, school.id);
-  //     setDoc(playerRef, createPlayer);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+    try {
+      const playerRef = doc(playersColletionRef, createPlayer.player_id);
+      setDoc(playerRef, createPlayer);
+      router.push(`/room/${gameIdInput}`);
+    } catch (error) {
+      console.error(error);
+      setformErrorMessage("An error occurred")
+    }
+  }
 
   // Check if the game code is valid
   async function checkGameId(gameIdInput : string) {
@@ -63,7 +78,6 @@ export default function JoinGameForm() {
       onSnapshot(queryClause, (querySnapshot) => {
         querySnapshot.forEach((doc) => {
             gameDetails = doc.data()
-            console.log(doc.data())
         });
 
         // if game code exists , then set the valid state to true
@@ -84,7 +98,7 @@ export default function JoinGameForm() {
   }, [])
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
 
     {/* Game code input */}
      <input
@@ -92,6 +106,7 @@ export default function JoinGameForm() {
       value={gameIdInput}
       onChange={(e)=> setgameIdInput(e.target.value)}
       autoFocus={true}
+      required
       readOnly={isValidGameCode ? true : false}
       placeholder="Enter game code"
       onClick={() => setformErrorMessage("")}
@@ -104,20 +119,24 @@ export default function JoinGameForm() {
         <p className="mt-4 text-lg">Enter your name</p>
         <input
           type="text"
+          onChange={(e)=> setgamePlayerName(e.target.value)}
+          required
           placeholder="Enter your name"
           autoFocus={true}
+          maxLength={15}
+          onClick={() => setformErrorMessage("")}
           className="form-control text-lg mt-1 w-full py-3 px-3 tracking-widest rounded border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-blue-500 focus:ring-1 focus:border-100 transition duration-0 hover:duration-150"
         />
       </> : ''
     }
       <button
-        onClick={()=> isValidGameCode || gameIdFromLocalstorage ? joinGame() :checkGameId(gameIdInput)}
+        type="submit"
         className='btn flex py-3 px-10 place-content-center mt-7 bg-blue-500 text-white rounded-lg w-full font-bold drop-shadow'>
         {isValidGameCode || gameIdFromLocalstorage ? "Join game" : "Next"}
       </button>
 
       {/* If there is an error message */}
       { formErrorMessage &&  <p className="mt-2 text-red-500">{formErrorMessage}</p>}
-    </div>
+    </form>
   )
 }
