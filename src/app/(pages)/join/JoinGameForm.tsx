@@ -55,6 +55,7 @@ export default function JoinGameForm() {
     try {
       const playerRef = doc(playersColletionRef, createPlayer.player_id);
       setDoc(playerRef, createPlayer);
+      localStorage.setItem('playerDetails', createPlayer.player_id)
       router.push(`/room/${gameIdInput}`);
     } catch (error) {
       console.error(error);
