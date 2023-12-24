@@ -3,7 +3,7 @@ export default function PlayerList(props : any) {
     return (
         <div className="px-2">
             {/* Active players list  */}
-            <p className="text-lg mt-5"><span className="text-blue-500 font-bold">13</span> player(s) online</p>
+            <p className="text-lg mt-5"><span className="text-blue-500 font-bold">{playerList.length}</span> player(s) online</p>
 
             <div className="grid grid-cols-2 gap-4 mt-5">
 

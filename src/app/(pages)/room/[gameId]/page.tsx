@@ -19,7 +19,7 @@ export default function GamePage({ params } : any) {
   const gameId = params.gameId
   const playersColletionRef = collection(firebase, 'players');
   const [playerList, setplayerList] = useState<[]>([])
-  const [playerListOrder, setplayerListOrder] = useState<[]>([])
+  const [playerListOrder, setplayerListOrder] = useState<any>([])
 
 
   // Re order playerList by time created
@@ -28,6 +28,17 @@ export default function GamePage({ params } : any) {
     setplayerListOrder(playerList)
   }
 
+  // check if is the admin
+  const isPlayerAdmin =() : boolean =>{
+    if(playerListOrder.length < 1) return false;
+    if(playerListOrder[0].player_id === localStorage.getItem('playerDetails') as string){
+      return  true
+    }
+
+    return false
+  }
+
+  // Get player List
   useEffect(() => {
     // Query Statement
     const queryClause = query(
@@ -49,10 +60,11 @@ export default function GamePage({ params } : any) {
     }
   }, [])
 
-    // Player list
+    // Re order player list
     useEffect(() => {
-      reorderPlayerListAccendingOrder(playerList)
       // Call the function and log the reordered list
+      reorderPlayerListAccendingOrder(playerList)
+      isPlayerAdmin() //Check if the player is admin
       return () => {
       }
     }, [playerList])
@@ -70,13 +82,16 @@ export default function GamePage({ params } : any) {
 
       {/* This button is only available to the game admin */}
       {/* The route is /game/<gameID>/<gameRoundId> */}
-      <center>
-        <Link href={'/game/123434/tesfghbh'}>
-          <button className='btn flex py-3 place-content-center mt-10 bg-blue-500 text-white px-12 rounded-full font-bold drop-shadow'>
-            Start game
-          </button>
-        </Link>
-      </center>
+      {
+        isPlayerAdmin() &&
+          <center>
+            <Link href={'/game/123434/tesfghbh'}>
+              <button className='btn flex py-3 place-content-center mt-10 bg-blue-500 text-white px-12 rounded-full font-bold drop-shadow'>
+                Start game
+              </button>
+            </Link>
+          </center>
+      }
     </main>
   )
 }
