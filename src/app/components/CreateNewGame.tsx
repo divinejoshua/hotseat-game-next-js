@@ -1,14 +1,37 @@
 'use client'
 import { useRouter } from "next/navigation";
+import firebase from "../utils/firebase";
+import {
+  doc,
+  setDoc,
+  collection,
+} from 'firebase/firestore';
+import { generateGameId } from "../utils/generateId";
 
 export default function CreateNewGame() {
 
+    //HOOKS
     const router = useRouter();
 
+    // DATA
+    const colletionRef = collection(firebase, 'players');
+
     // Create new game code
-    const getNewGameCode = () =>{
-        localStorage.setItem('gameId', '345456');
-        router.push('/join');
+    const getNewGameCode = async () =>{
+      let createGame = {
+          game_id : generateGameId().toString(),
+      };
+
+      try {
+          const messageRef = doc(colletionRef, createGame.game_id);
+          await setDoc(messageRef, createGame);
+          localStorage.setItem('gameId', createGame.game_id);
+          router.push('/join');
+
+      } catch (error) {
+          console.log(error);
+      }
+
     }
 
   return (
