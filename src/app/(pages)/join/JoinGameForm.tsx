@@ -9,6 +9,7 @@ import {
     collection,
     query,
     where,
+    serverTimestamp
   } from 'firebase/firestore';
   import {v4 as uuidv4} from 'uuid';
 
@@ -47,7 +48,8 @@ export default function JoinGameForm() {
     const createPlayer = {
       game_id : gameIdInput,
       player_id : uuidv4(),
-      player_name : gamePlayerName
+      player_name : gamePlayerName,
+      createdAt : serverTimestamp(),
     };
 
     try {
