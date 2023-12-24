@@ -30,8 +30,12 @@ export default function GamePage({ params } : any) {
 
   // check if is the admin
   const isPlayerAdmin =() : boolean =>{
-    if(playerListOrder.length < 1) return false;
+    if(!localStorage.getItem('playerDetails')) return false
     let playerDetails = JSON.parse(localStorage.getItem('playerDetails') || "");
+
+    // Return if the player list is empty
+    if(playerListOrder.length < 1) return false;
+
     if(playerListOrder[0].player_id ===playerDetails.player_id){
       return  true
     }

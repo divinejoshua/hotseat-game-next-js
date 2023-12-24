@@ -39,7 +39,7 @@ export default function JoinGameForm() {
     // Check if game is valid and player has a valid name
     if(isValidGameCode && gamePlayerName.replace(/\s/g, '').length){
       localStorage.removeItem('gameId');
-        addPlayerToGame()
+      addPlayerToGame()
     }
   }
 
@@ -66,6 +66,15 @@ export default function JoinGameForm() {
     } catch (error) {
       console.error(error);
       setformErrorMessage("An error occurred")
+    }
+  }
+
+  // Check if the user is alreay in the game and then redirect them to game page
+  const checkIfUserAlreadyInGame = () =>{
+    if(!localStorage.getItem('playerDetails')) return false
+    let playerDetails = JSON.parse(localStorage.getItem('playerDetails') || "");
+    if(playerDetails.game_id ===gameIdInput){
+      router.push(`/room/${gameIdInput}`);
     }
   }
 
@@ -105,6 +114,15 @@ export default function JoinGameForm() {
     checkGameId(localStorage.getItem('gameId') || "")
     return () => {}
   }, [])
+
+  // Check if user is already in game
+  useEffect(() => {
+    if(isValidGameCode){
+      checkIfUserAlreadyInGame()
+    }
+    return () => {}
+  }, [isValidGameCode])
+
 
   return (
     <form onSubmit={handleSubmit}>
