@@ -14,7 +14,7 @@ export default function CreateNewGame() {
     const router = useRouter();
 
     // DATA
-    const colletionRef = collection(firebase, 'players');
+    const colletionRef = collection(firebase, 'games');
 
     // Create new game code
     const getNewGameCode = async () =>{
@@ -23,8 +23,8 @@ export default function CreateNewGame() {
       };
 
       try {
-          const messageRef = doc(colletionRef, createGame.game_id);
-          await setDoc(messageRef, createGame);
+          const gameRef = doc(colletionRef, createGame.game_id);
+          await setDoc(gameRef, createGame);
           localStorage.setItem('gameId', createGame.game_id);
           router.push('/join');
 
