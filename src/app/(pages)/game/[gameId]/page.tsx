@@ -25,6 +25,7 @@ export default function GamePage({ params } : any) {
   const gamesColletionRef = collection(firebase, 'games');
   const [showQuestionForm, setshowQuestionForm] = useState<boolean>(true)
   const [gameState, setgameState] = useState<string>("")
+  const [gameRoundId, setgameRoundId] = useState<string>("")
 
 
   // Check for current game state
@@ -45,6 +46,7 @@ export default function GamePage({ params } : any) {
       // If there is a game state then redirect the users to the games page
       if(gameDetails.game_state){
         setgameState(gameDetails.game_state)
+        setgameRoundId(gameDetails.game_round)
       }
     })
 
@@ -59,9 +61,9 @@ export default function GamePage({ params } : any) {
       {
         // Check the game state
         gameState === GAME_STATE.GAME_SEND_QUESTIONS ?
-          <SendQuestion gameId={params.gameId}/>
+          <SendQuestion gameId={params.gameId} gameRoundId={gameRoundId}/>
         :  gameState === GAME_STATE.GAME_LIST_QUESTIONS ?
-          <QuestionSection gameId={params.gameId}/>
+          <QuestionSection gameId={params.gameId} />
         : ""
       }
     </main>

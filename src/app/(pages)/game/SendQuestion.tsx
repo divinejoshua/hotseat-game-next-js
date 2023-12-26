@@ -9,26 +9,47 @@ import {
   query,
   where,
   updateDoc,
+  serverTimestamp,
 } from 'firebase/firestore';
 import firebase from "@/app/utils/firebase"
 import GAME_STATE from "@/app/utils/gamestate"
+import {v4 as uuidv4} from 'uuid';
 
 
 export default function SendQuestion(props : any) {
 
   //Data
   let gameId = props.gameId
+  let gameRoundId = props.gameRoundId
   const [maxLength, setmaxLength] = useState<number>(140)
   const [messageBody, setmessageBody] = useState<string>("")
   const [messageSentSuccess, setmessageSentSuccess] = useState<boolean>(false)
   const [isError, setisError] = useState<boolean>(false)
   const [countDownSeconds, setcountDownSeconds] = useState<number>(10)
   const gamesColletionRef = collection(firebase, 'games');
+  const questionsColletionRef = collection(firebase, 'questions');
 
    // The send messge function
-   const SendMessage = () =>{
-    console.log("Sending message")
-    setmessageSentSuccess(true)
+   const SendMessage = async () =>{
+    if(!localStorage.getItem('playerDetails')) return false
+    let playerDetails = JSON.parse(localStorage.getItem('playerDetails') || "");
+
+    let createQuestion = {
+        game_round : gameRoundId,
+        message : messageBody,
+        message_id : uuidv4(),
+        sender_id : playerDetails.player_id,
+        game_id : gameId,
+        createdAt : serverTimestamp(),
+    };
+
+    try {
+        const questionRef = doc(questionsColletionRef, createQuestion.message_id);
+        await setDoc(questionRef, createQuestion);
+        setmessageSentSuccess(true)
+    } catch (error) {
+        console.log(error);
+    }
    }
 
   //  Update the game status value
