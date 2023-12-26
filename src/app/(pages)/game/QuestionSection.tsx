@@ -32,8 +32,19 @@ export default function QuestionSection(props : any) {
 
   // The change question function
   const changeQuestion = (value: number) =>{
+
+    const updatedGame = {
+      active_question : value,
+    };
+
+    try {
+      const gameRef = doc(gamesColletionRef, gameId);
+      updateDoc(gameRef, updatedGame);
+    } catch (error) {
+      // console.error(error);
+    }
+
     setactiveQuestion(value)
-    setcountDownSeconds(3)
   }
 
   // Finish Question then takes user back to the Write question page by updating game state
@@ -41,6 +52,7 @@ export default function QuestionSection(props : any) {
     const updatedGame = {
       game_state : GAME_STATE.GAME_SEND_QUESTIONS,
       game_round : uuidv4(),
+      active_question : 1,
     };
 
     try {
@@ -61,6 +73,35 @@ export default function QuestionSection(props : any) {
     return () =>{ clearInterval(timer) };
   }, [countDownSeconds, props]);
 
+
+  // Check for current game state
+  useEffect(() => {
+    // Query Statement
+    const queryClause = query(
+      gamesColletionRef,
+      where('game_id', '==', gameId),
+    );
+
+    // Get messages from database
+    const getGameState = onSnapshot(queryClause, (querySnapshot) => {
+      let gameDetails : any = {}
+      querySnapshot.forEach((doc) => {
+          gameDetails = doc.data()
+      });
+
+      // Set the activeQuestion
+      setcountDownSeconds(3)
+      setactiveQuestion(gameDetails.active_question)
+      if(questionList.length===0){
+        setactiveQuestion(0)
+      }
+    })
+
+    return () => {
+      getGameState
+    }
+  }, [activeQuestion])
+
   // Use effect
   useEffect(() => {
 
@@ -69,12 +110,10 @@ export default function QuestionSection(props : any) {
       setgameAdmin(true);
     }
 
-    if(questionList.length===0){
-      setactiveQuestion(0)
-    }
     return () => {
     }
-  }, [questionList])
+  }, [])
+  
 
   return (
     <div className="pt-3 px-2">
@@ -123,7 +162,7 @@ export default function QuestionSection(props : any) {
             </div>
 
             {/* Finish and send the user back to the question form  */}
-            { activeQuestion === questionList.length &&
+            { activeQuestion === questionList.length && gameAdmin &&
               <center>
                 <button className='btn flex py-3 place-content-center mt-10 bg-blue-500 text-white px-12 rounded-full font-bold drop-shadow'
                  onClick={() => finishQuestion()}
@@ -138,7 +177,7 @@ export default function QuestionSection(props : any) {
 
       {/* If there were no questions asked */}
       {
-        countDownSeconds === 0 && questionList.length ===0 &&
+        countDownSeconds === 0 && questionList.length ===0 && gameAdmin &&
         <div>
           <center>
             <p className="mt-20 text-2xl">No Questions asked !</p>

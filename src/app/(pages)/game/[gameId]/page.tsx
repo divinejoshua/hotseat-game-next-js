@@ -27,7 +27,7 @@ export default function GamePage({ params } : any) {
   const [gameState, setgameState] = useState<string>("")
 
 
-  // Check for current game round
+  // Check for current game state
   useEffect(() => {
     // Query Statement
     const queryClause = query(
@@ -42,7 +42,7 @@ export default function GamePage({ params } : any) {
           gameDetails = doc.data()
       });
 
-      // If there is a game round then redirect the users to the games page
+      // If there is a game state then redirect the users to the games page
       if(gameDetails.game_state){
         setgameState(gameDetails.game_state)
       }
