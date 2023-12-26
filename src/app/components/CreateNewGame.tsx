@@ -20,7 +20,7 @@ export default function CreateNewGame() {
     const getNewGameCode = async () =>{
       let createGame = {
           game_id : generateGameId().toString(),
-          game_round : "",
+          game_state : ""
       };
 
       try {

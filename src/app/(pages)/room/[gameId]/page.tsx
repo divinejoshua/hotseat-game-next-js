@@ -10,17 +10,25 @@ import {
   collection,
   query,
   where,
-  orderBy,
+  updateDoc,
 } from 'firebase/firestore';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import {v4 as uuidv4} from 'uuid';
+import { useRouter } from "next/navigation";
+import GAME_STATE from "@/app/utils/gamestate";
+
 export default function GamePage({ params } : any) {
+  // HOOKS
+  const router = useRouter()
 
   // DATA
   const gameId = params.gameId
   const playersColletionRef = collection(firebase, 'players');
+  const gamesColletionRef = collection(firebase, 'games');
   const [playerList, setplayerList] = useState<[]>([])
   const [playerListOrder, setplayerListOrder] = useState<any>([])
   const [isPlayerAdmin, setisPlayerAdmin] = useState<boolean>(false)
+  const [gameState, setgameState] = useState<string>("")
 
 
   // Re order playerList by time created
@@ -30,23 +38,36 @@ export default function GamePage({ params } : any) {
   }
 
   // check if is the admin
-  const checkIfPlayerIsAdmin =() =>{
+  const checkIfPlayerIsAdmin =useCallback( () =>{
     if(!localStorage.getItem('playerDetails')) return false
     let playerDetails = JSON.parse(localStorage.getItem('playerDetails') || "");
 
     // Return if the player list is empty
     if(playerListOrder.length < 1) return false;
 
-    if(playerListOrder[0].player_id ===playerDetails.player_id){
+    setisPlayerAdmin(false)
+    if(playerListOrder[0].player_id === playerDetails.player_id){
       setisPlayerAdmin(true)
+    } else {
+      setisPlayerAdmin(false)
     }
     return false
-  }
-
+  }, [isPlayerAdmin, playerListOrder]);
 
   // This function will create a new game round and redirect the users to the game pages
   const startGame = () =>{
+    if(!isPlayerAdmin) return false
     console.log("Starting game...")
+    const updatedGame = {
+      game_state : GAME_STATE.GAME_STARTED,
+    };
+
+    try {
+      const gameRef = doc(gamesColletionRef, gameId);
+      updateDoc(gameRef, updatedGame);
+    } catch (error) {
+      // console.error(error);
+    }
   }
 
   // Get player List
@@ -71,20 +92,43 @@ export default function GamePage({ params } : any) {
     }
   }, [])
 
-    // Re order player list
-    useEffect(() => {
-      // Call the function and log the reordered list
-      reorderPlayerListAccendingOrder(playerList)
-      checkIfPlayerIsAdmin() //Check if the player is admin
-      return () => {
+  // Re order player list
+  useEffect(() => {
+    // Call the function and log the reordered list
+    reorderPlayerListAccendingOrder(playerList)
+    checkIfPlayerIsAdmin() //Check if the player is admin
+    return () => {
+    }
+  }, [playerList, checkIfPlayerIsAdmin])
+
+
+  // Check for current game round
+  useEffect(() => {
+    // Query Statement
+    const queryClause = query(
+      gamesColletionRef,
+      where('game_id', '==', gameId),
+    );
+
+    // Get messages from database
+    const getGameState = onSnapshot(queryClause, (querySnapshot) => {
+      let gameDetails : any = {}
+      querySnapshot.forEach((doc) => {
+          gameDetails = doc.data()
+      });
+
+      // If there is a game round then redirect the users to the games page
+      if(gameDetails.game_state === GAME_STATE.GAME_STARTED){
+        setgameState(gameDetails.GAME_STATE.GAME_STARTED)
+        // The URL format is /game/<gameID>/<gameRound>
+        router.push(`/game/${gameId}`);
       }
-    }, [playerList])
+    })
 
-
-    // Check for current game round
-    useEffect(() => {
-      //
-    }, [])
+    return () => {
+      getGameState
+    }
+  }, [gameState])
 
   return (
     <main className="">
