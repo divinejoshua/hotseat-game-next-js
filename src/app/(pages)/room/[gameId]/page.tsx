@@ -76,7 +76,6 @@ export default function GamePage({ params } : any) {
       // Call the function and log the reordered list
       reorderPlayerListAccendingOrder(playerList)
       checkIfPlayerIsAdmin() //Check if the player is admin
-      if(!localStorage.getItem('playerDetails')) console.log("out")
       return () => {
       }
     }, [playerList])
