@@ -115,7 +115,7 @@ export default function QuestionSection(props : any) {
     const getQuestionList = onSnapshot(queryClause, (querySnapshot) => {
       const response : [] | any = [];
       querySnapshot.forEach((doc) => {
-        response.push(doc.data().message)
+        response.push(doc.data())
       });
       setquestionList(response)
     })
@@ -167,7 +167,7 @@ export default function QuestionSection(props : any) {
         <div className="mt-10">
             <div className='message-card rounded shadow-sm border mt-5 py-10 px-7'>
                 <div className='message-body text-center text-xl text-gray-700'>
-                    <p>{questionListOrder[activeQuestion-1]}</p>
+                    <p>{questionListOrder[activeQuestion-1]?.message}</p>
                 </div>
             </div>
 

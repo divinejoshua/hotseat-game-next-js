@@ -118,7 +118,7 @@ export default function GamePage({ params } : any) {
       });
 
       // If there is a game round then redirect the users to the games page
-      if(gameDetails.game_state === GAME_STATE.GAME_SEND_QUESTIONS){
+      if(gameDetails.game_state){
         setgameState(GAME_STATE.GAME_SEND_QUESTIONS)
         // The URL format is /game/<gameID>/<gameRound>
         router.push(`/game/${gameId}`);
