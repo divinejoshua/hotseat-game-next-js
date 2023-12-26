@@ -7,6 +7,10 @@ const inter = Baloo_2({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Hotseat game',
   description: 'This is an 18+ rated game',
+  openGraph: {
+    title: 'Acme',
+    description: 'Acme is a...',
+  },
 }
 
 export default function RootLayout({
