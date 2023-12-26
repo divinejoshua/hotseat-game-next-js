@@ -23,7 +23,6 @@ export default function SendQuestion(props : any) {
   const [messageSentSuccess, setmessageSentSuccess] = useState<boolean>(false)
   const [isError, setisError] = useState<boolean>(false)
   const [countDownSeconds, setcountDownSeconds] = useState<number>(10)
-  const [gameState, setgameState] = useState<string>("")
   const gamesColletionRef = collection(firebase, 'games');
 
    // The send messge function
