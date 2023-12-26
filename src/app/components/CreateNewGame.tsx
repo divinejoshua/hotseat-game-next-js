@@ -7,6 +7,7 @@ import {
   collection,
 } from 'firebase/firestore';
 import { generateGameId } from "../utils/generateId";
+import {v4 as uuidv4} from 'uuid';
 
 export default function CreateNewGame() {
 
@@ -21,6 +22,7 @@ export default function CreateNewGame() {
       let createGame = {
           game_id : generateGameId().toString(),
           game_state : "",
+          game_round : uuidv4(),
           active_question : 1,
       };
 
