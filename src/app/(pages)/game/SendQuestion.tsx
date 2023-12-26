@@ -21,11 +21,13 @@ export default function SendQuestion(props : any) {
   //Data
   let gameId = props.gameId
   let gameRoundId = props.gameRoundId
+  let countDown = process.env.NEXT_PUBLIC_COUNTDOWN
+  let countDowonInt = Number(countDown)
   const [maxLength, setmaxLength] = useState<number>(140)
   const [messageBody, setmessageBody] = useState<string>("")
   const [messageSentSuccess, setmessageSentSuccess] = useState<boolean>(false)
   const [isError, setisError] = useState<boolean>(false)
-  const [countDownSeconds, setcountDownSeconds] = useState<number>(60)
+  const [countDownSeconds, setcountDownSeconds] = useState<number>(countDowonInt)
   const gamesColletionRef = collection(firebase, 'games');
   const questionsColletionRef = collection(firebase, 'questions');
 

@@ -37,7 +37,8 @@ export default function GamePage({ params } : any) {
   }
 
   // check if is the admin
-  const checkIfPlayerIsAdmin =useCallback( () =>{
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const checkIfPlayerIsAdmin =() =>{
     if(!localStorage.getItem('playerDetails')) return false
     let playerDetails = JSON.parse(localStorage.getItem('playerDetails') || "");
 
@@ -47,19 +48,19 @@ export default function GamePage({ params } : any) {
     setisPlayerAdmin(false)
     if(playerListOrder[0].player_id === playerDetails.player_id){
       setisPlayerAdmin(true)
-      localStorage.setItem('gameAdmin', "true")
     } else {
       setisPlayerAdmin(false)
-      localStorage.removeItem('gameAdmin')
     }
     return false
-  }, [isPlayerAdmin, playerListOrder]);
+  };
 
   // This function will create a new game round and redirect the users to the game pages
   const startGame = () =>{
     if(!isPlayerAdmin) return false
+    let playerDetails = JSON.parse(localStorage.getItem('playerDetails') || "");
     const updatedGame = {
       game_state : GAME_STATE.GAME_SEND_QUESTIONS,
+      game_admin : playerDetails.player_id
     };
 
     try {
@@ -94,9 +95,12 @@ export default function GamePage({ params } : any) {
 
   // Re order player list
   useEffect(() => {
-    // Call the function and log the reordered list
-    reorderPlayerListAccendingOrder(playerList)
-    checkIfPlayerIsAdmin() //Check if the player is admin
+    if(!gameState){
+      // Call the function and log the reordered list
+      reorderPlayerListAccendingOrder(playerList)
+      checkIfPlayerIsAdmin() //Check if the player is admin
+    }
+
     return () => {
     }
   }, [playerList, checkIfPlayerIsAdmin])

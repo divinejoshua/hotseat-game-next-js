@@ -95,6 +95,13 @@ export default function QuestionSection(props : any) {
       // Set the activeQuestion
       setcountDownSeconds(3)
       setactiveQuestion(gameDetails.active_question)
+
+      // get admin user status
+      if(!localStorage.getItem('playerDetails')) return
+      let playerDetails = JSON.parse(localStorage.getItem('playerDetails') || "");
+      if(gameDetails.game_admin ===playerDetails.player_id){
+        setgameAdmin(true);
+      }
     })
 
     return () => {
@@ -134,19 +141,6 @@ export default function QuestionSection(props : any) {
   }, [questionList])
 
 
-  // Use effect
-  useEffect(() => {
-
-    // Set admin
-    if(localStorage.getItem("gameAdmin") === "true") {
-      setgameAdmin(true);
-    }
-
-    return () => {
-    }
-  }, [])
-
-
   return (
     <div className="pt-3 px-2">
       <div className="clear-both">
@@ -163,7 +157,7 @@ export default function QuestionSection(props : any) {
       }
 
       {/* Question box */}
-      { countDownSeconds === 0 && questionList.length > 1 &&
+      { countDownSeconds === 0 && questionList.length > 0 &&
         <div className="mt-10">
             <div className='message-card rounded shadow-sm border mt-5 py-10 px-7'>
                 <div className='message-body text-center text-xl text-gray-700'>

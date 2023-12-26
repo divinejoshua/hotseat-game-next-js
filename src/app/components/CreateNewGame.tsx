@@ -24,6 +24,7 @@ export default function CreateNewGame() {
           game_state : "",
           game_round : uuidv4(),
           active_question : 1,
+          game_admin : ""
       };
 
       try {
