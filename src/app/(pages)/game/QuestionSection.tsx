@@ -96,23 +96,23 @@ export default function QuestionSection(props : any) {
 
             {/* Pagination  */}
             <div className="mt-10 flex justify-between">
-              { gameAdmin &&
+              { gameAdmin ?
                 <button className='btn py-2 place-content-center bg-purple-500 text-white px-4 rounded-lg font-bold drop-shadow'
                   onClick={() => changeQuestion(activeQuestion-1)}
                   disabled={activeQuestion === 1}
                   >
                   Prev
-                </button>
+                </button> : <p></p>
               }
               <p className="text-center text-lg mt-2"> {activeQuestion}/{questionList.length}</p>
 
-              { gameAdmin &&
+              { gameAdmin ?
                 <button className='btn py-2 place-content-center bg-blue-500 text-white px-4 rounded-lg font-bold drop-shadow'
                   onClick={() => changeQuestion(activeQuestion+1)}
                   disabled={activeQuestion == questionList.length}
                 >
                   Next
-                </button>
+                </button> : <p></p>
               }
             </div>
 
