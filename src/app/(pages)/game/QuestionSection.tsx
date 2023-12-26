@@ -63,6 +63,12 @@ export default function QuestionSection(props : any) {
 
   // Use effect
   useEffect(() => {
+
+    // Set admin
+    if(localStorage.getItem("gameAdmin") === "true") {
+      setgameAdmin(true);
+    }
+
     if(questionList.length===0){
       setactiveQuestion(0)
     }
