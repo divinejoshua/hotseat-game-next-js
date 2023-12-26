@@ -109,6 +109,7 @@ export default function JoinGameForm() {
   }
 
   useEffect(() => {
+    localStorage.removeItem('gameAdmin')
     setgameIdFromLocalstorage(localStorage.getItem('gameId') )
     setgameIdInput(localStorage.getItem('gameId') || "")
     checkGameId(localStorage.getItem('gameId') || "")
