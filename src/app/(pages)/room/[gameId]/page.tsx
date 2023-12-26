@@ -57,9 +57,8 @@ export default function GamePage({ params } : any) {
   // This function will create a new game round and redirect the users to the game pages
   const startGame = () =>{
     if(!isPlayerAdmin) return false
-    console.log("Starting game...")
     const updatedGame = {
-      game_state : GAME_STATE.GAME_STARTED,
+      game_state : GAME_STATE.GAME_SEND_QUESTIONS,
     };
 
     try {
@@ -118,8 +117,8 @@ export default function GamePage({ params } : any) {
       });
 
       // If there is a game round then redirect the users to the games page
-      if(gameDetails.game_state === GAME_STATE.GAME_STARTED){
-        setgameState(GAME_STATE.GAME_STARTED)
+      if(gameDetails.game_state === GAME_STATE.GAME_SEND_QUESTIONS){
+        setgameState(GAME_STATE.GAME_SEND_QUESTIONS)
         // The URL format is /game/<gameID>/<gameRound>
         router.push(`/game/${gameId}`);
       }

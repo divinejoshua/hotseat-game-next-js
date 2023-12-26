@@ -1,6 +1,5 @@
 // These are the games states of a game
 const GAME_STATE = {
-    GAME_STARTED : "GAME_STARTED",
     GAME_SEND_QUESTIONS : "GAME_SEND_QUESTIONS",
     GAME_LIST_QUESTIONS : "GAME_LIST_QUESTIONS",
   }

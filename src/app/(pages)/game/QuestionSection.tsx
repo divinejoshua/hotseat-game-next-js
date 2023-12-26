@@ -1,12 +1,25 @@
 "use client"
 
 import { useEffect, useState } from "react";
+import {
+  doc,
+  onSnapshot,
+  setDoc,
+  collection,
+  query,
+  where,
+  updateDoc,
+} from 'firebase/firestore';
+import firebase from "@/app/utils/firebase"
+import GAME_STATE from "@/app/utils/gamestate"
 
 export default function QuestionSection(props : any) {
 
   //Data
+  let gameId = props.gameId
   const [activeQuestion, setactiveQuestion] = useState<number>(1)
   const [countDownSeconds, setcountDownSeconds] = useState<number>(3)
+  const gamesColletionRef = collection(firebase, 'games');
   const [questionList, setquestionList] = useState([
     "What is the capital of France?",
     "Who painted the Mona Lisa?",
@@ -21,10 +34,21 @@ export default function QuestionSection(props : any) {
     setcountDownSeconds(3)
   }
 
-  // Finish Question then takes user back to the Write question page
+  // Finish Question then takes user back to the Write question page by updating game state
   const finishQuestion = () =>{
-    props.setshowQuestionForm(true)
+    const updatedGame = {
+      game_state : GAME_STATE.GAME_SEND_QUESTIONS,
+    };
+
+    try {
+      const gameRef = doc(gamesColletionRef, gameId);
+      updateDoc(gameRef, updatedGame);
+    } catch (error) {
+      // console.error(error);
+    }
   }
+
+
   // Count down Timer effect
   useEffect(() => {
     let timer : any

@@ -1,15 +1,30 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import {
+  doc,
+  onSnapshot,
+  setDoc,
+  collection,
+  query,
+  where,
+  updateDoc,
+} from 'firebase/firestore';
+import firebase from "@/app/utils/firebase"
+import GAME_STATE from "@/app/utils/gamestate"
+
 
 export default function SendQuestion(props : any) {
 
   //Data
+  let gameId = props.gameId
   const [maxLength, setmaxLength] = useState<number>(140)
   const [messageBody, setmessageBody] = useState<string>("")
   const [messageSentSuccess, setmessageSentSuccess] = useState<boolean>(false)
   const [isError, setisError] = useState<boolean>(false)
   const [countDownSeconds, setcountDownSeconds] = useState<number>(10)
+  const [gameState, setgameState] = useState<string>("")
+  const gamesColletionRef = collection(firebase, 'games');
 
    // The send messge function
    const SendMessage = () =>{
@@ -17,14 +32,30 @@ export default function SendQuestion(props : any) {
     setmessageSentSuccess(true)
    }
 
+  //  Update the game status value
+   const updateGameStateValue = ()=>{
+    const updatedGame = {
+      game_state : GAME_STATE.GAME_LIST_QUESTIONS,
+    };
+
+    try {
+      const gameRef = doc(gamesColletionRef, gameId);
+      updateDoc(gameRef, updatedGame);
+    } catch (error) {
+      // console.error(error);
+    }
+   }
+
    // Count down Timer effect
    useEffect(() => {
     if (countDownSeconds===0){
-        props.setshowQuestionForm(false)
+      updateGameStateValue()
     }
     const timer : any = countDownSeconds > 0 && setInterval(() => setcountDownSeconds(countDownSeconds - 1), 1000);
     return () =>{ clearInterval(timer) };
   }, [countDownSeconds, props]);
+
+
 
   return (
     <div className="pt-3 px-2">
