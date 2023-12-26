@@ -18,17 +18,14 @@ export default function QuestionSection(props : any) {
 
   //Data
   let gameId = props.gameId
+  let gameRoundId = props.gameRoundId
   const [activeQuestion, setactiveQuestion] = useState<number>(1)
   const [countDownSeconds, setcountDownSeconds] = useState<number>(3)
   const gamesColletionRef = collection(firebase, 'games');
   const [gameAdmin, setgameAdmin] = useState<boolean>(false)
-  const [questionList, setquestionList] = useState([
-    "What is the capital of France?",
-    "Who painted the Mona Lisa?",
-    "What year was JavaScript created?",
-    "How many continents are there?",
-    "What is the cell?"
-  ])
+  const questionsColletionRef = collection(firebase, 'questions');
+  const [questionList, setquestionList] = useState([])
+  const [questionListOrder, setquestionListOrder] = useState<any>([])
 
   // The change question function
   const changeQuestion = (value: number) =>{
@@ -63,6 +60,12 @@ export default function QuestionSection(props : any) {
     }
   }
 
+  // Re order questionList by time created
+  const reorderQuestionListAccendingOrder = (questionList : any) =>{
+    questionList.sort((a : any , b : any) => a.createdAt - b.createdAt);
+    setquestionListOrder(questionList)
+  }
+
 
   // Count down Timer effect
   useEffect(() => {
@@ -92,15 +95,45 @@ export default function QuestionSection(props : any) {
       // Set the activeQuestion
       setcountDownSeconds(3)
       setactiveQuestion(gameDetails.active_question)
-      if(questionList.length===0){
-        setactiveQuestion(0)
-      }
     })
 
     return () => {
       getGameState
     }
   }, [activeQuestion])
+
+
+  // Get Question List
+  useEffect(() => {
+    // Query Statement
+    const queryClause = query(
+      questionsColletionRef,
+      where('game_round', '==', gameRoundId),
+    );
+
+    // Get messages from database
+    const getQuestionList = onSnapshot(queryClause, (querySnapshot) => {
+      const response : [] | any = [];
+      querySnapshot.forEach((doc) => {
+        response.push(doc.data().message)
+      });
+      setquestionList(response)
+      console.log(response)
+    })
+
+    return () => {
+      getQuestionList
+    }
+  }, [])
+
+  // Re order question list
+  useEffect(() => {
+    // Call the function and log the reordered list
+    reorderQuestionListAccendingOrder(questionList)
+    return () => {
+    }
+  }, [questionList])
+
 
   // Use effect
   useEffect(() => {
@@ -113,7 +146,7 @@ export default function QuestionSection(props : any) {
     return () => {
     }
   }, [])
-  
+
 
   return (
     <div className="pt-3 px-2">
@@ -135,7 +168,7 @@ export default function QuestionSection(props : any) {
         <div className="mt-10">
             <div className='message-card rounded shadow-sm border mt-5 py-10 px-7'>
                 <div className='message-body text-center text-xl text-gray-700'>
-                    <p>{questionList[activeQuestion-1]}</p>
+                    <p>{questionListOrder[activeQuestion-1]}</p>
                 </div>
             </div>
 

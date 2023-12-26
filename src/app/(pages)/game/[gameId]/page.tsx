@@ -63,7 +63,7 @@ export default function GamePage({ params } : any) {
         gameState === GAME_STATE.GAME_SEND_QUESTIONS ?
           <SendQuestion gameId={params.gameId} gameRoundId={gameRoundId}/>
         :  gameState === GAME_STATE.GAME_LIST_QUESTIONS ?
-          <QuestionSection gameId={params.gameId} />
+          <QuestionSection gameId={params.gameId} gameRoundId={gameRoundId} />
         : ""
       }
     </main>
