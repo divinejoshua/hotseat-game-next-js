@@ -8,8 +8,9 @@ export const metadata: Metadata = {
   title: 'Hotseat game',
   description: 'This is an 18+ rated game',
   openGraph: {
-    title: 'Acme',
-    description: 'Acme is a...',
+    title: 'Hotseat game',
+    description: 'This is an 18+ rated game',
+    images : 'https://hotseat-game.vercel.app/meta.png'
   },
 }
 
