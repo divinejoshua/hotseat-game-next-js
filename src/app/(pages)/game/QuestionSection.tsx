@@ -118,7 +118,6 @@ export default function QuestionSection(props : any) {
         response.push(doc.data().message)
       });
       setquestionList(response)
-      console.log(response)
     })
 
     return () => {
