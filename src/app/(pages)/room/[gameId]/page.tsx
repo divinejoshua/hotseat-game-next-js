@@ -20,6 +20,7 @@ export default function GamePage({ params } : any) {
   const playersColletionRef = collection(firebase, 'players');
   const [playerList, setplayerList] = useState<[]>([])
   const [playerListOrder, setplayerListOrder] = useState<any>([])
+  const [isPlayerAdmin, setisPlayerAdmin] = useState<boolean>(false)
 
 
   // Re order playerList by time created
@@ -29,7 +30,7 @@ export default function GamePage({ params } : any) {
   }
 
   // check if is the admin
-  const isPlayerAdmin =() : boolean =>{
+  const checkIfPlayerIsAdmin =() =>{
     if(!localStorage.getItem('playerDetails')) return false
     let playerDetails = JSON.parse(localStorage.getItem('playerDetails') || "");
 
@@ -37,9 +38,15 @@ export default function GamePage({ params } : any) {
     if(playerListOrder.length < 1) return false;
 
     if(playerListOrder[0].player_id ===playerDetails.player_id){
-      return  true
+      setisPlayerAdmin(true)
     }
     return false
+  }
+
+
+  // This function will create a new game round and redirect the users to the game pages
+  const startGame = () =>{
+    console.log("Starting game...")
   }
 
   // Get player List
@@ -68,10 +75,17 @@ export default function GamePage({ params } : any) {
     useEffect(() => {
       // Call the function and log the reordered list
       reorderPlayerListAccendingOrder(playerList)
-      isPlayerAdmin() //Check if the player is admin
+      checkIfPlayerIsAdmin() //Check if the player is admin
+      if(!localStorage.getItem('playerDetails')) console.log("out")
       return () => {
       }
     }, [playerList])
+
+
+    // Check for current game round
+    useEffect(() => {
+      //
+    }, [])
 
   return (
     <main className="">
@@ -87,13 +101,15 @@ export default function GamePage({ params } : any) {
       {/* This button is only available to the game admin */}
       {/* The route is /game/<gameID>/<gameRoundId> */}
       {
-        isPlayerAdmin() &&
+        isPlayerAdmin &&
           <center>
-            <Link href={'/game/123434/tesfghbh'}>
-              <button className='btn flex py-3 place-content-center mt-10 bg-blue-500 text-white px-12 rounded-full font-bold drop-shadow'>
+            {/* <Link href={'/game/123434/tesfghbh'}> */}
+              <button
+                onClick={()=> startGame()}
+                className='btn flex py-3 place-content-center mt-10 bg-blue-500 text-white px-12 rounded-full font-bold drop-shadow'>
                 Start game
               </button>
-            </Link>
+            {/* </Link> */}
           </center>
       }
     </main>
