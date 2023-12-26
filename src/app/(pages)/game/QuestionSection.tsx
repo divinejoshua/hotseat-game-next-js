@@ -12,6 +12,7 @@ import {
 } from 'firebase/firestore';
 import firebase from "@/app/utils/firebase"
 import GAME_STATE from "@/app/utils/gamestate"
+import {v4 as uuidv4} from 'uuid';
 
 export default function QuestionSection(props : any) {
 
@@ -20,6 +21,7 @@ export default function QuestionSection(props : any) {
   const [activeQuestion, setactiveQuestion] = useState<number>(1)
   const [countDownSeconds, setcountDownSeconds] = useState<number>(3)
   const gamesColletionRef = collection(firebase, 'games');
+  const [gameAdmin, setgameAdmin] = useState<boolean>(false)
   const [questionList, setquestionList] = useState([
     "What is the capital of France?",
     "Who painted the Mona Lisa?",
@@ -38,6 +40,7 @@ export default function QuestionSection(props : any) {
   const finishQuestion = () =>{
     const updatedGame = {
       game_state : GAME_STATE.GAME_SEND_QUESTIONS,
+      game_round : uuidv4(),
     };
 
     try {
@@ -93,19 +96,24 @@ export default function QuestionSection(props : any) {
 
             {/* Pagination  */}
             <div className="mt-10 flex justify-between">
-              <button className='btn py-2 place-content-center bg-purple-500 text-white px-4 rounded-lg font-bold drop-shadow'
-                onClick={() => changeQuestion(activeQuestion-1)}
-                disabled={activeQuestion === 1}
-                >
-                Prev
-              </button>
+              { gameAdmin &&
+                <button className='btn py-2 place-content-center bg-purple-500 text-white px-4 rounded-lg font-bold drop-shadow'
+                  onClick={() => changeQuestion(activeQuestion-1)}
+                  disabled={activeQuestion === 1}
+                  >
+                  Prev
+                </button>
+              }
               <p className="text-center text-lg mt-2"> {activeQuestion}/{questionList.length}</p>
-              <button className='btn py-2 place-content-center bg-blue-500 text-white px-4 rounded-lg font-bold drop-shadow'
-                onClick={() => changeQuestion(activeQuestion+1)}
-                disabled={activeQuestion == questionList.length}
-              >
-                Next
-              </button>
+
+              { gameAdmin &&
+                <button className='btn py-2 place-content-center bg-blue-500 text-white px-4 rounded-lg font-bold drop-shadow'
+                  onClick={() => changeQuestion(activeQuestion+1)}
+                  disabled={activeQuestion == questionList.length}
+                >
+                  Next
+                </button>
+              }
             </div>
 
             {/* Finish and send the user back to the question form  */}

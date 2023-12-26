@@ -47,8 +47,10 @@ export default function GamePage({ params } : any) {
     setisPlayerAdmin(false)
     if(playerListOrder[0].player_id === playerDetails.player_id){
       setisPlayerAdmin(true)
+      localStorage.setItem('gameAdmin', "true")
     } else {
       setisPlayerAdmin(false)
+      localStorage.removeItem('gameAdmin')
     }
     return false
   }, [isPlayerAdmin, playerListOrder]);
