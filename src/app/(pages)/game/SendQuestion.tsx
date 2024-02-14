@@ -14,6 +14,7 @@ import {
 import firebase from "@/app/utils/firebase"
 import GAME_STATE from "@/app/utils/gamestate"
 import {v4 as uuidv4} from 'uuid';
+import { isNetworkAvailable } from "@/app/utils/extra";
 
 
 export default function SendQuestion(props : any) {
@@ -30,9 +31,12 @@ export default function SendQuestion(props : any) {
   const [countDownSeconds, setcountDownSeconds] = useState<number>(countDowonInt)
   const gamesColletionRef = collection(firebase, 'games');
   const questionsColletionRef = collection(firebase, 'questions');
+  const [disabledButton, setdisabledButton] = useState<boolean>(false)
 
    // The send messge function
    const SendMessage = async () =>{
+    if (!isNetworkAvailable()) return //Return is network is not available
+    setdisabledButton(true)
     if(!localStorage.getItem('playerDetails')) return false
     let playerDetails = JSON.parse(localStorage.getItem('playerDetails') || "");
 
@@ -51,6 +55,7 @@ export default function SendQuestion(props : any) {
         setmessageSentSuccess(true)
     } catch (error) {
         console.log(error);
+        setdisabledButton(false)
     }
    }
 
@@ -106,8 +111,9 @@ export default function SendQuestion(props : any) {
 
             <center>
               <button
-              className='btn flex place-content-center mt-10 bg-blue-500 text-white px-20 py-3 rounded-full font-bold drop-shadow'
-              onClick={()=> SendMessage() }
+                disabled={disabledButton}
+                className='btn flex place-content-center mt-10 bg-blue-500 text-white px-20 py-3 rounded-full font-bold drop-shadow'
+                onClick={()=> SendMessage() }
               >
                 Send message
               </button>
