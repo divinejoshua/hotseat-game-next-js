@@ -153,7 +153,7 @@ export default function GamePage({ params } : any) {
             {/* <Link href={'/game/123434/tesfghbh'}> */}
               <button
                 onClick={()=> startGame()}
-                className='btn flex py-3 place-content-center mt-10 bg-blue-500 text-white px-12 rounded-full font-bold drop-shadow'>
+                className='btn flex py-3 place-content-center mt-10 bg-blue-500 text-white px-12 rounded-full font-bold drop-shadow show-delay'>
                 Start game
               </button>
             {/* </Link> */}

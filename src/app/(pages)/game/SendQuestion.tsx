@@ -14,7 +14,7 @@ import {
 import firebase from "@/app/utils/firebase"
 import GAME_STATE from "@/app/utils/gamestate"
 import {v4 as uuidv4} from 'uuid';
-import { isNetworkAvailable } from "@/app/utils/extra";
+import { isNetworkAvailable, isValidMessageText } from "@/app/utils/extra";
 
 
 export default function SendQuestion(props : any) {
@@ -36,6 +36,7 @@ export default function SendQuestion(props : any) {
    // The send messge function
    const SendMessage = async () =>{
     if (!isNetworkAvailable()) return //Return is network is not available
+    if(!isValidMessageText(messageBody)) return //Return if the message is invalid
     setdisabledButton(true)
     if(!localStorage.getItem('playerDetails')) return false
     let playerDetails = JSON.parse(localStorage.getItem('playerDetails') || "");
@@ -58,6 +59,7 @@ export default function SendQuestion(props : any) {
         setdisabledButton(false)
     }
    }
+
 
   //  Update the game status value
    const updateGameStateValue = ()=>{
