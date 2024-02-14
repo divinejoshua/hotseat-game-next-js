@@ -12,6 +12,7 @@ import {
     serverTimestamp
   } from 'firebase/firestore';
   import {v4 as uuidv4} from 'uuid';
+import { isNetworkAvailable } from "@/app/utils/extra";
 
 export default function JoinGameForm() {
 
@@ -26,10 +27,13 @@ export default function JoinGameForm() {
   const [gameIdFromLocalstorage, setgameIdFromLocalstorage] = useState<any>()
   const [gameIdInput, setgameIdInput] = useState<string>("")
   const [gamePlayerName, setgamePlayerName] = useState<string>("")
+  const [disabledButton, setdisabledButton] = useState<boolean>(false)
 
   // Handle and validate form
   const handleSubmit = (event : any) =>{
     event.preventDefault();
+    if (!isNetworkAvailable()) return //Return is network is not available
+    setdisabledButton(true)
 
     // Validate game id
     if(!isValidGameCode){
@@ -66,6 +70,7 @@ export default function JoinGameForm() {
     } catch (error) {
       console.error(error);
       setformErrorMessage("An error occurred")
+      setdisabledButton(false)
     }
   }
 
@@ -159,6 +164,7 @@ export default function JoinGameForm() {
     }
       <button
         type="submit"
+        disabled={disabledButton}
         className='btn flex py-3 px-10 place-content-center mt-7 bg-blue-500 text-white rounded-lg w-full font-bold drop-shadow'>
         {isValidGameCode || gameIdFromLocalstorage ? "Join game" : "Next"}
       </button>
