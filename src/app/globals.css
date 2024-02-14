@@ -33,3 +33,12 @@ header{
   width: 25px;
   height: 25px;
 }
+
+.show-delay {
+  animation: cssAnimation 0s 3s forwards;
+  opacity: 0;
+}
+
+@keyframes cssAnimation {
+  to   { opacity: 1; }
+}

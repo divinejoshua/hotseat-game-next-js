@@ -33,7 +33,6 @@ export default function JoinGameForm() {
   const handleSubmit = (event : any) =>{
     event.preventDefault();
     if (!isNetworkAvailable()) return //Return is network is not available
-    setdisabledButton(true)
 
     // Validate game id
     if(!isValidGameCode){
@@ -42,6 +41,7 @@ export default function JoinGameForm() {
 
     // Check if game is valid and player has a valid name
     if(isValidGameCode && gamePlayerName.replace(/\s/g, '').length){
+      setdisabledButton(true)
       localStorage.removeItem('gameId');
       addPlayerToGame()
     }
